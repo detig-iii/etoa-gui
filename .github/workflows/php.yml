@@ -14,7 +14,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: etoa_test
           MYSQL_DATABASE: etoa_test
         ports:
-          - 33306:3306
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
@@ -36,7 +36,7 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
     
     - name: Set up DB config
-      run: echo '{"host":"127.0.0.1","dbname":"etoa_test","user":"root","password":"etoa_test"}' > htdocs/config/db.conf
+      run: echo '{"host":"mysql","dbname":"etoa_test","user":"root","password":"etoa_test"}' > htdocs/config/db.conf
       
     - name: Set up DB
       run: bin/db.php migrate
