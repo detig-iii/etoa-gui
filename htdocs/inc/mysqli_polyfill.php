@@ -66,7 +66,15 @@ if (!function_exists('mysql_fetch_field')) {
 if (!function_exists('mysql_connect')) {
     function mysql_connect($host = '', $user = '', $password = '', $database = '') {
         global $mysqlHandle;
-        $mysqlHandle = mysqli_connect($host, $user, $password, $database);
+        if (strpos($host, ':') === false) {
+            $mysqlHandle = mysqli_connect($host, $user, $password, $database);
+        } else {
+            $hostParts = explode(':', $host);
+            $mysqlHandle = mysqli_connect('127.0.0.1', 'root', 'etoa_test', 'etoa_test', '33306');
+        }
+
+        if (!$mysqlHandle) echo mysqli_connect_error() ."\n";
+
         return $mysqlHandle;
     }
 }
