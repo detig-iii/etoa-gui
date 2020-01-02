@@ -24,3 +24,33 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
+
+  php-cs-fixer-src:
+    name: PHP-CS-Fixer src
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: PHP-CS-Fixer
+      uses: docker://oskarstark/php-cs-fixer-ga
+      with:
+        args: src --rules=@PSR2,binary_operator_spaces,blank_line_before_return,function_typehint_space,no_empty_comment,no_empty_phpdoc,no_empty_statement,no_extra_consecutive_blank_lines,no_leading_import_slash,no_leading_namespace_whitespace,trailing_comma_in_multiline_array,space_after_semicolon,single_quote,return_type_declaration,no_unused_imports,declare_strict_types --allow-risky=yes
+
+  php-cs-fixer-tests:
+    name: PHP-CS-Fixer test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: PHP-CS-Fixer
+      uses: docker://oskarstark/php-cs-fixer-ga
+      with:
+        args: tests --rules=@PSR2,binary_operator_spaces,blank_line_before_return,function_typehint_space,no_empty_comment,no_empty_phpdoc,no_empty_statement,no_extra_consecutive_blank_lines,no_leading_import_slash,no_leading_namespace_whitespace,trailing_comma_in_multiline_array,space_after_semicolon,single_quote,return_type_declaration,no_unused_imports,declare_strict_types --allow-risky=yes
+        
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: PHPStan
+      uses: docker://oskarstark/phpstan-ga
+      with:
+        args: analyse src tests --level=5 --no-progress
