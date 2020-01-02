@@ -10,6 +10,15 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    - name: Composer Cache Directory
+      id: composer-cache
+      uses: actions/cache@v1
+      with:
+          path: ~/.composer
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
     - name: Validate composer.json and composer.lock
       run: composer validate
 
